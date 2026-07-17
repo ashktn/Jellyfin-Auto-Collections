@@ -5,11 +5,12 @@ import os
 import requests
 from loguru import logger
 import time
-from main import working_directory
+from pathlib import Path
 class Trakt(ListScraper):
 
     _alias_ = 'trakt'
-    _access_token_file = str(working_directory) + '/.trakt_access_token'
+    _working_directory = Path("/app/config") if os.getenv("RUNNING_IN_DOCKER", "").lower() == "true" else Path.cwd()
+    _access_token_file = str(_working_directory) + '/.trakt_access_token'
 
     _chart_types = {
             "movies/trending": {
